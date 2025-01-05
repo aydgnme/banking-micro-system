@@ -16,6 +16,8 @@ public class BankingSystem {
             // Configurare platformă
             Profile profile = new ProfileImpl();
             profile.setParameter(Profile.MAIN_HOST, "localhost");
+            profile.setParameter(Profile.MAIN_PORT, "2099");
+            profile.setParameter(Profile.PLATFORM_ID, "BankingPlatform");
             profile.setParameter(Profile.GUI, "true");
             
             // Creare container principal
@@ -30,6 +32,15 @@ public class BankingSystem {
                 null
             );
             bankAgent.start();
+            
+            // Pornire Sniffer Agent
+            System.out.println("Pornire Sniffer Agent...");
+            AgentController sniffer = mainContainer.createNewAgent(
+                "sniffer",
+                "jade.tools.sniffer.Sniffer",
+                new Object[]{"BankAgent", "ATM1", "ATM2", "ATM3"}
+            );
+            sniffer.start();
             
             // Pornire agenți ATM
             System.out.println("Pornire agenți ATM...");

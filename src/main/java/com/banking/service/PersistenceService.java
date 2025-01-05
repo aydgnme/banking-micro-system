@@ -23,7 +23,7 @@ public class PersistenceService {
         try {
             objectMapper.writeValue(new File(ACCOUNTS_FILE), accounts);
         } catch (IOException e) {
-            System.err.println("Hesaplar kaydedilirken hata oluştu: " + e.getMessage());
+            System.err.println("Error saving accounts: " + e.getMessage());
         }
     }
 
@@ -36,7 +36,7 @@ public class PersistenceService {
                         HashMap.class, String.class, Account.class));
             }
         } catch (IOException e) {
-            System.err.println("Hesaplar yüklenirken hata oluştu: " + e.getMessage());
+            System.err.println("Error saving accounts: " + e.getMessage());
         }
         return new HashMap<>();
     }
@@ -45,7 +45,7 @@ public class PersistenceService {
         try {
             objectMapper.writeValue(new File(TRANSACTIONS_FILE), transactions);
         } catch (IOException e) {
-            System.err.println("İşlemler kaydedilirken hata oluştu: " + e.getMessage());
+            System.err.println("Error saving transactions: " + e.getMessage());
         }
     }
 
@@ -58,7 +58,7 @@ public class PersistenceService {
                         HashMap.class, String.class, Transaction.class));
             }
         } catch (IOException e) {
-            System.err.println("İşlemler yüklenirken hata oluştu: " + e.getMessage());
+            System.err.println("Error saving transactions: " + e.getMessage());
         }
         return new HashMap<>();
     }
