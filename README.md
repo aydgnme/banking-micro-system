@@ -1,79 +1,139 @@
-# Sistem Bancar Micro cu JADE
+# Sistem Bancar cu Agenți JADE
 
-Acest proiect este un sistem bancar bazat pe agenți, dezvoltat folosind JADE (Java Agent Development Framework). Sistemul constă într-un agent bancar central și mai mulți agenți ATM.
+## Descriere
+Acest sistem bancar este implementat folosind framework-ul JADE (Java Agent Development Framework) și simulează interacțiunea dintre o bancă și mai multe ATM-uri folosind un sistem multi-agent.
 
-## Caracteristici
+## Arhitectură
 
-- Agent Bancar Central
-- Agenți ATM Multipli
-- Interfață Grafică (GUI)
+### Componente
+1. **Agent Bancă (BankAgent)**
+   - Gestionează conturile și tranzacțiile
+   - Procesează cererile de la ATM-uri
+   - Menține persistența datelor
+
+2. **Agenți ATM (ATMAgent)**
+   - Interfață grafică pentru utilizatori
+   - Comunicare cu agentul bancă
+   - Procesare operațiuni bancare
+
+3. **Servicii**
+   - PersistenceService: salvare/încărcare date
+   - Sniffer Agent: monitorizare comunicație
+
+### Protocol de Comunicare
+
+#### 1. Autentificare
+```
+ATM -> Bancă: REQUEST
+Content: "VALIDATE:accountNumber:pin"
+
+Bancă -> ATM: INFORM/FAILURE
+Content: "VALID:accountNumber" / "PIN_INVALID"
+```
+
+#### 2. Retragere Numerar
+```
+ATM -> Bancă: REQUEST
+Content: "WITHDRAW:accountNumber:amount:atmId"
+
+Bancă -> ATM: INFORM/FAILURE
+Content: "SUCCES:newBalance" / "FONDURI_INSUFICIENTE"
+```
+
+#### 3. Verificare Sold
+```
+ATM -> Bancă: REQUEST
+Content: "BALANCE:accountNumber"
+
+Bancă -> ATM: INFORM/FAILURE
+Content: "SOLD:balance" / "CONT_INEXISTENT"
+```
+
+## Caracteristici Avansate
+
+### 1. Persistența Datelor
+- Salvare conturi în format JSON
+- Salvare tranzacții în format JSON
+- Încărcare automată la pornire
+
+### 2. Securitate
 - Validare PIN
-- Operațiuni de Retragere
-- Verificare Sold
-- Înregistrare Tranzacții
-- Creare Dinamică de Agenți
+- Verificare fonduri disponibile
+- Logging tranzacții
 
-## Cerințe
+### 3. Interfață Grafică
+- Panou de autentificare
+- Panou operațiuni
+- Istoric tranzacții
+- Mesaje de stare
 
-- Java 11 sau mai nou
-- Maven
-- JADE Framework
+### 4. Monitorizare
+- Sniffer Agent pentru urmărirea comunicației
+- Logging evenimente sistem
+- Notificări în timp real
 
-## Instalare
+## Conturi de Test
+1. Ion Popescu
+   - Cont: 1234567890
+   - PIN: 1234
+   - Sold: 1000.0 RON
 
-1. Clonați proiectul:
+2. Maria Ionescu
+   - Cont: 0987654321
+   - PIN: 4321
+   - Sold: 2500.0 RON
+
+3. Andrei Popa
+   - Cont: 1111222233
+   - PIN: 5555
+   - Sold: 5000.0 RON
+
+4. Elena Dumitrescu
+   - Cont: 4444555566
+   - PIN: 6789
+   - Sold: 7500.0 RON
+
+5. George Constantinescu
+   - Cont: 7777888899
+   - PIN: 9876
+   - Sold: 10000.0 RON
+
+## Instalare și Rulare
+
+1. Clonare repository:
 ```bash
-git clone [repository-url]
+git clone [URL_REPOSITORY]
 cd banking-micro-system
 ```
 
-2. Instalați dependențele Maven:
+2. Compilare:
 ```bash
 mvn clean install
 ```
 
-## Rulare
-
-Pentru a porni sistemul:
-
+3. Rulare:
 ```bash
-mvn exec:java -Dexec.mainClass="com.banking.BankingSystem"
+mvn exec:java
 ```
 
-## Utilizare
+## Diagrama de Secvență pentru Operațiuni
 
-1. La pornire, sistemul creează automat un Agent Bancar și trei Agenți ATM.
-2. Pentru fiecare ATM se deschide o fereastră GUI separată.
-3. Detalii cont de test:
-   - Număr Cont: 1234567890
-   - PIN: 1234
+### Retragere Numerar
+```
+ATM                     Bancă
+ |                        |
+ |--- Validare PIN ------>|
+ |<---- PIN Valid --------|
+ |                        |
+ |--- Cerere Retragere -->|
+ |      Verificare Sold   |
+ |      Actualizare Cont  |
+ |<---- Confirmare -------|
+ |      Afișare Rezultat  |
+```
 
-### Operațiuni ATM
-
-1. Autentificare:
-   - Introduceți numărul de cont și PIN-ul
-   - Apăsați butonul "Autentificare"
-
-2. Retragere:
-   - Introduceți suma
-   - Apăsați butonul "Retragere"
-
-3. Verificare Sold:
-   - Apăsați butonul "Verificare Sold"
-
-## Arhitectura Sistemului
-
-- `BankAgent`: Gestionare conturi, validare PIN și procesare tranzacții
-- `ATMAgent`: Interfață utilizator și comunicare cu agentul bancar
-- `Account`: Model date cont
-- `Transaction`: Model date tranzacție
-
-## Securitate
-
-- Validare PIN
-- Înregistrare Tranzacții
-- Protocol Securizat de Comunicare
-
-## Licență
-
-Acest proiect este licențiat sub licența MIT. 
+## Note Tehnice
+- Java 11+
+- JADE Framework 4.5.0
+- Jackson pentru JSON
+- Swing pentru GUI 
