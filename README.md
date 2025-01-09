@@ -136,4 +136,12 @@ ATM                     Bancă
 - Java 11+ ☕
 - JADE Framework 4.5.0 🤖
 - Jackson pentru JSON 📋
-- Swing pentru GUI 🖼️ 
+- Swing pentru GUI 🖼️
+
+## 📜 Licență
+Acest proiect este licențiat sub termenii [Licenței MIT](LICENSE).
+
+```text
+MIT License
+Copyright (c) 2025 Banking Micro System
+``` 
